@@ -9,10 +9,13 @@ from .ports import PORT_COORDS, PORT_COUNTRY
 from .ml.predictor import load, predict_rate, predict_rate_batch, predict_vessel_batch, predict_month_batch, MONTHS
 from .routing import fast_route, route_optimizer
 
-app = FastAPI(title="SIH26006 Freight Intelligence ML API", version="4.1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("FRONTEND_ORIGIN", "http://localhost:5173").split(","),
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://sih-26006-intelligent-freight-forecasting-4lypplwz1.vercel.app",
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
