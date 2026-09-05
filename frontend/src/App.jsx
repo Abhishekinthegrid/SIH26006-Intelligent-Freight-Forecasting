@@ -10,7 +10,7 @@ import {
 import { PORTS_BY_COUNTRY, PORT_COORDS, PORT_COUNTRY } from './portData'
 import { VESSELS } from './vesselData'
 
-const API = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
+const API = (import.meta.env.VITE_API_URL || 'https://sih26006-backend.onrender.com').replace(/\/+$/, '')
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 const DEFAULT = {
   origin_country: 'Indonesia', origin_port: 'Balikpapan', destination_country: 'India', destination_port: 'Paradip',
