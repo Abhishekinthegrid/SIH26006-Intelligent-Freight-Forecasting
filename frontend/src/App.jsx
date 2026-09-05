@@ -1675,66 +1675,67 @@ function RouteMap({
           {Object.keys(PORT_COORDS).length} ports mapped
         </div>
 
-        <div className="routeInfo">
-          <div className="routeInfoTitle">
-            <RouteIcon size={16}/>
-            Route information
+      </div>
+
+      <div className="routeInfo">
+        <div className="routeInfoTitle">
+          <RouteIcon size={16}/>
+          Route information
+        </div>
+
+        <div className="routeInfoGrid">
+          <div>
+            <span>Origin port</span>
+            <b>{form.origin_port}</b>
           </div>
 
-          <div className="routeInfoGrid">
-            <div>
-              <span>Origin port</span>
-              <b>{form.origin_port}</b>
-            </div>
-
-            <div>
-              <span>Destination port</span>
-              <b>{form.destination_port}</b>
-            </div>
-
-            <div>
-              <span>Distance (approx.)</span>
-              <b>
-                {distance
-                  ? `${money(distance)} nm`
-                  : 'Waiting for route'}
-              </b>
-            </div>
-
-            <div>
-              <span>Estimated travel time</span>
-              <b>
-                {distance
-                  ? `${travelMin}–${travelMax} days`
-                  : '—'}
-              </b>
-            </div>
-
-            <div className="wide">
-              <span>Shipping route</span>
-              <b>
-                {
-                  activeRoute?.label ||
-                  routeLabel(
-                    form.origin_country,
-                    form.destination_country
-                  )
-                }
-              </b>
-            </div>
+          <div>
+            <span>Destination port</span>
+            <b>{form.destination_port}</b>
           </div>
 
-          <div className="routeVessel">
-            <Ship size={16}/>
+          <div>
+            <span>Distance (approx.)</span>
+            <b>
+              {distance
+                ? `${money(distance)} nm`
+                : 'Waiting for route'}
+            </b>
+          </div>
 
-            <div>
-              <b>{vName}</b>
+          <div>
+            <span>Estimated travel time</span>
+            <b>
+              {distance
+                ? `${travelMin}–${travelMax} days`
+                : '—'}
+            </b>
+          </div>
 
-              <span>
-                {v.min.toLocaleString()}–
-                {v.max.toLocaleString()} DWT · selected vessel
-              </span>
-            </div>
+          <div className="wide">
+            <span>Shipping route</span>
+            <b>
+              {
+                activeRoute?.label ||
+                routeLabel(
+                  form.origin_country,
+                  form.destination_country
+                )
+              }
+            </b>
+          </div>
+        </div>
+
+        <div className="routeVessel">
+          <Ship size={16}/>
+
+          <div>
+            <b>{vName}</b>
+
+            <span>
+              {v.min.toLocaleString()}–
+              {v.max.toLocaleString()} DWT · selected vessel
+            </span>
           </div>
         </div>
       </div>
