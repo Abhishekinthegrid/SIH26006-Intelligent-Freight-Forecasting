@@ -1,0 +1,45 @@
+{
+  "model_version": "catboost-300trees-v2",
+  "trained_at_utc": "2026-09-05T05:09:29Z",
+  "training_rows": 80000,
+  "validation_rows": 10000,
+  "test_rows": 10000,
+  "total_rows": 100000,
+  "feature_columns": [
+    "origin_country",
+    "origin_port",
+    "destination_country",
+    "destination_port",
+    "cargo_type",
+    "vessel_type",
+    "month",
+    "quantity_tonnes",
+    "fuel_price_usd_tonne",
+    "port_congestion",
+    "route_distance_nm"
+  ],
+  "categorical_features": [
+    "origin_country",
+    "origin_port",
+    "destination_country",
+    "destination_port",
+    "cargo_type",
+    "vessel_type",
+    "month"
+  ],
+  "validation": {
+    "mae": 2.3706767140990475,
+    "rmse": 2.9850056448191564,
+    "r2": 0.9224881652973818
+  },
+  "test": {
+    "mae": 2.419831120844973,
+    "rmse": 3.0392311406330785,
+    "r2": 0.9192884441258368
+  },
+  "target": "freight_rate_usd_tonne",
+  "target_median": 68.80999755859375,
+  "target_q75": 76.4800033569336,
+  "model_status": "bootstrap model included for instant local demo; run RETRAIN_MODEL.bat to train on the supplied 1M CSV",
+  "source_note": "Bootstrap model is from the project smoke-test set; the training script uses the supplied 1M CSV for the final model."
+}
