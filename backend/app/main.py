@@ -9,6 +9,8 @@ from .ports import PORT_COORDS, PORT_COUNTRY
 from .ml.predictor import load, predict_rate, predict_rate_batch, predict_vessel_batch, predict_month_batch, MONTHS
 from .routing import fast_route, route_optimizer
 
+app = FastAPI(title="SIH26006 Freight Intelligence ML API")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
