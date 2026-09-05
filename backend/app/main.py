@@ -11,12 +11,14 @@ from .routing import fast_route, route_optimizer
 
 app = FastAPI(title="SIH26006 Freight Intelligence ML API")
 
+app = FastAPI(title="SIH26006 Freight Intelligence ML API")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://sih-26006-intelligent-freight-forecasting-4lypplwz1.vercel.app",
+        "https://sih-26006-intelligent-freight-forec.vercel.app",
     ],
     allow_credentials=False,
     allow_methods=["*"],
