@@ -2376,7 +2376,7 @@ function AboutPage() {
 
         <div className="aboutHeroVisual">
           <img
-            src="/global-shipping-routes.png"
+            src="/global-shipping-routes1.png"
             alt="Global maritime shipping network"
           />
 
@@ -2500,7 +2500,7 @@ function AboutPage() {
 
         <div className="gridwalkersVisual">
           <img
-            src="/global-shipping-routes.png"
+            src="/global-shipping-routes2.png"
             alt="Maritime vessel and shipping network"
           />
 
