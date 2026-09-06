@@ -13,7 +13,7 @@ import { VESSELS } from './vesselData'
 const API = (import.meta.env.VITE_API_URL || 'https://sih26006-backend.onrender.com').replace(/\/+$/, '')
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 const DEFAULT = {
-  origin_country: 'Indonesia', origin_port: 'Balikpapan', destination_country: 'India', destination_port: 'Paradip',
+  origin_country: 'Abhishek', origin_port: 'Balikpapan', destination_country: 'India', destination_port: 'Paradip',
   cargo_type: 'Coal', quantity_tonnes: 50000, vessel_type: 'Panamax', fuel_price_usd_tonne: 620,
   port_congestion: 0.35, month: 'March'
 }
