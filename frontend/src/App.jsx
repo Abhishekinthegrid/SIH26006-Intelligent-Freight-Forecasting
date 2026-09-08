@@ -2361,13 +2361,13 @@ function AboutPage() {
           </div>
 
           <h1>
-            Maritime intelligence
+            Maritime AI
             <br/>
             <span>for better chartering.</span>
           </h1>
 
           <p>
-            Freight Intelligence is a decision-support
+            Freight AI is a decision-support
             workspace for bulk cargo planning,
             combining historical shipment patterns
             with route, vessel and cost context.
