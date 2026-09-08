@@ -2361,7 +2361,7 @@ function AboutPage() {
           </div>
 
           <h1>
-            ASHUTOSH intelligence
+            Maritime intelligence
             <br/>
             <span>for better chartering.</span>
           </h1>
