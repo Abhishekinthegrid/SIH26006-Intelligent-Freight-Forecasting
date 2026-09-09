@@ -499,7 +499,7 @@ function App() {
             <i></i>
             {serviceOnline
               ? "AI model online"
-              : "Backend offline"}
+              : "AI model offline"}
           </span>
 
           <button
