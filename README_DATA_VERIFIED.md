@@ -1,1 +1,0 @@
-The supplied maritime_ai_training_1m.csv was inspected before this rebuild: 1,000,000 rows; 20 origin countries; 46 ports; 6 cargo types; 10 vessel types; no missing values; split=800,000 train / 100,000 validation / 100,000 test; target `freight_rate_usd_tonne`.
