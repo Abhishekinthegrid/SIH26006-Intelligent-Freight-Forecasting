@@ -1,4 +1,3 @@
-
 # SIH26006 – Intelligent Freight Forecasting
 
 ## Freight Intelligence
@@ -28,7 +27,7 @@ The system aims to help users make more informed decisions related to:
 
 ---
 
-# 2. Solution Overview
+## 2. Solution Overview
 
 **Freight Intelligence** combines machine learning and maritime routing into a single web-based platform.
 
@@ -57,7 +56,7 @@ The system processes these inputs through the backend and provides:
 
 ---
 
-# 3. System Architecture
+## 3. System Architecture
 
 The system follows a frontend-backend-machine-learning architecture.
 
@@ -326,7 +325,7 @@ Node.js
 npm
 Git
 Git LFS
-14. Backend Setup
+14. Backend Run Instructions
 Open a terminal inside the backend directory.
 Create a Python virtual environment:
 python -m venv venv
@@ -340,7 +339,7 @@ The backend will normally be available at:
 http://127.0.0.1:8000
 Health check:
 http://127.0.0.1:8000/health
-15. Frontend Setup
+15. Frontend Run Instructions
 Open another terminal inside the frontend directory.
 Install dependencies:
 npm install
@@ -349,7 +348,7 @@ npm run dev
 The frontend will normally be available at:
 http://localhost:5173
 16. Frontend Environment Configuration
-Create/configure the frontend environment variable:
+The frontend uses the following environment variable:
 VITE_API_URL
 For the deployed backend:
 VITE_API_URL=https://sih26006-backend.onrender.com
@@ -361,7 +360,7 @@ The training process reads the maritime training dataset and produces:
 backend/models/freight_model.cbm
 and:
 backend/models/model_meta.json
-The trained model is then loaded by:
+The trained model is loaded by:
 backend/app/ml/predictor.py
 for live freight prediction.
 18. Production Deployment
@@ -457,17 +456,3 @@ GridWalkers
 Smart India Hackathon – SIH26006
 Project: Intelligent Freight Forecasting
 Application: Freight Intelligence
-License
-This project is developed for the Smart India Hackathon (SIH26006) and is intended for project demonstration and evaluation purposes.
-
-### For your GitHub repository
-
-Your root should ideally look like:
-
-```text
-SIH26006-Intelligent-Freight-Forecasting/
-├── backend/
-├── frontend/
-├── .gitattributes
-├── .gitignore
-└── README.md
