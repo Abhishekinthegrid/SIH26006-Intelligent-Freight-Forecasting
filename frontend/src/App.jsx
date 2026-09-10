@@ -1922,6 +1922,16 @@ function Results({
     )
   }
 
+  const userCost =
+    Number(form.quantity_tonnes) * Number(form.fuel_price_usd_tonne)
+
+  const aiCost = Number(result.estimated_total_cost)
+
+  const savingsPercent =
+    userCost > 0
+      ? ((userCost - aiCost) / userCost) * 100
+      : 0
+
   return (
     <section className="panel resultsPanel">
       <div className="resultsHeader">
@@ -1994,7 +2004,7 @@ function Results({
         <Metric
           icon={TrendingDown}
           label="Estimated Savings"
-          value={`${result.savings_percent}%`}
+          value={`${savingsPercent.toFixed(1)}%`}
         />
 
         <Metric
