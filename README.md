@@ -1,4 +1,4 @@
-# SIH26006 – Intelligent Freight Forecasting
+no# SIH26006 – Intelligent Freight Forecasting
 
 ## Freight Intelligence
 
@@ -456,4 +456,3 @@ GridWalkers
 Smart India Hackathon – SIH26006
 Project: Intelligent Freight Forecasting
 Application: Freight Intelligence
-.
