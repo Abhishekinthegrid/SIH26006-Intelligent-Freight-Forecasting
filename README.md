@@ -1,60 +1,567 @@
-# SIH26006 Freight Intelligence — Optimized 2D ML Build
+# SIH26006 – Intelligent Freight Forecasting
 
-This build keeps the existing dark maritime V3 UI while moving route selection to the backend.
+## Freight Intelligence
 
-## What changed
+**Team:** GridWalkers  
+**SIH Problem Statement:** Development of an Intelligent Freight
+Forecasting Model for Optimized Vessel Chartering and Bulk Cargo
+Procurement from overseas to East Coast of India.
 
-- React still uses the same Home / Forecast / Routes / Vessels / Insights / About layout.
-- Country and port metadata comes from FastAPI `/api/metadata` (single backend source of truth).
-- Freight prediction uses CatBoost.
-- Geographic routing uses the SeaRoute maritime network instead of hand-drawn straight lines.
-- The backend validates returned route interiors against the bundled land mask.
-- ML ranks the water-only route candidates using predicted freight plus a transparent fuel-distance component.
-- Route candidates are cached (LRU 2048) so the same port pair is fast on subsequent requests.
-- Vessel comparison and the 12-month outlook are batch-predicted to reduce model-call overhead.
-- The frontend does not call routing when unrelated fields such as quantity/fuel/congestion/month change.
-- The home page contains a real global 2D satellite map with port markers; it does not draw decorative routes that can cross land.
-- Map overlays use translucent/blurred panels so the satellite map remains visible.
-- MongoDB is not required for the local prediction demo.
+------------------------------------------------------------------------
 
-## First-time Windows setup
+## Overview
 
-Use Python 3.11 for the backend environment.
+**Freight Intelligence** is an AI-powered maritime freight
+decision-support system designed to help users estimate freight rates,
+evaluate vessel options, and visualize practical maritime routes for
+bulk cargo transportation.
 
-1. Open this folder in VS Code.
-2. Double-click `SETUP_PROJECT.bat`.
-3. The setup script installs backend packages, installs the frontend, and starts both services.
-4. Open `http://localhost:5173`.
+The system combines:
 
-The package contains a bootstrap model so the UI can start immediately. To train the final model on the supplied 1M-row CSV, run `RETRAIN_MODEL.bat` once. Training is an offline step; prediction requests do not reread the 1M CSV.
+- **CatBoost machine learning** for freight-rate forecasting
+- **SeaRoute-based maritime routing** for water-route calculation
+- **FastAPI** for backend API services
+- **React + Vite** for the interactive frontend
+- **Leaflet-based map visualization** for route presentation
 
-## Manual run
+The goal is to turn shipment information into an actionable
+freight-planning result.
 
-Backend terminal:
+------------------------------------------------------------------------
 
-```powershell
-cd "C:\SIH project v4\backend"
-.\venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+## Key Features
+
+### 1. Freight Rate Forecasting
+
+The user provides shipment information such as:
+
+- Origin country and port
+- Destination country and port
+- Cargo type
+- Quantity in tonnes
+- Vessel type
+- Fuel price
+- Port congestion
+- Month
+
+The backend processes these inputs through the trained **CatBoost
+regression model** and returns a predicted freight rate.
+
+### 2. Maritime Route Calculation
+
+The system calculates a maritime route between the selected ports using
+SeaRoute.
+
+The routing system is designed to:
+
+- Prefer navigable maritime paths
+- Avoid land crossings
+- Calculate route distance
+- Validate route geometry
+- Return route coordinates for map visualization
+
+### 3. Vessel Intelligence
+
+The application supports multiple bulk-carrier vessel categories,
+including:
+
+- Handysize
+- Handymax
+- Supramax
+- Ultramax
+- Panamax
+- Kamsarmax
+- Post-Panamax
+- Capesize
+- Newcastlemax
+- VLOC
+
+### 4. Decision Support
+
+The application combines the forecasting and routing outputs to present
+useful planning information such as:
+
+- Predicted freight rate
+- Estimated total cost
+- Recommended vessel
+- Route distance
+- Route visualization
+- Planning insights
+
+------------------------------------------------------------------------
+
+## System Architecture
+
+``` text
+                 ┌─────────────────────┐
+                 │    React Frontend   │
+                 │       Vercel        │
+                 └──────────┬──────────┘
+                            │ HTTPS / REST API
+                            ▼
+                 ┌─────────────────────┐
+                 │      FastAPI        │
+                 │      Backend        │
+                 │       Render        │
+                 └───────┬─────┬───────┘
+                         │     │
+              ┌──────────┘     └──────────┐
+              ▼                           ▼
+     ┌─────────────────┐         ┌─────────────────┐
+     │ CatBoost Model  │         │ Maritime Route  │
+     │ Freight Forecast│         │ SeaRoute Engine  │
+     └─────────────────┘         └─────────────────┘
+              │                           │
+              └──────────┬────────────────┘
+                         ▼
+                 ┌─────────────────────┐
+                 │ Optimized Freight   │
+                 │ Decision Output     │
+                 └─────────────────────┘
 ```
 
-Frontend terminal:
+------------------------------------------------------------------------
 
-```powershell
-cd "C:\SIH project v4\frontend"
-npm.cmd run dev
+## Technology Stack
+
+| Layer               | Technology       |
+|---------------------|------------------|
+| Frontend            | React            |
+| Build Tool          | Vite             |
+| Language            | JavaScript / JSX |
+| Maps                | Leaflet          |
+| Backend             | Python           |
+| API Framework       | FastAPI          |
+| Machine Learning    | CatBoost         |
+| Maritime Routing    | SeaRoute         |
+| Frontend Deployment | Vercel           |
+| Backend Deployment  | Render           |
+| Dataset             | CSV              |
+| Model Format        | CatBoost `.cbm`  |
+
+------------------------------------------------------------------------
+
+## Project Structure
+
+``` text
+SIH26006-Intelligent-Freight-Forecasting/
+├── backend/
+│   ├── app/
+│   │   ├── ml/
+│   │   │   ├── train_model.py
+│   │   │   └── predictor.py
+│   │   ├── main.py
+│   │   ├── ports.py
+│   │   ├── routing.py
+│   │   ├── routing_grid.py
+│   │   ├── routing_searoute_legacy.py
+│   │   ├── schemas.py
+│   │   └── db.py
+│   ├── data/
+│   │   ├── maritime_ai_training_1m.csv
+│   │   ├── landmask.geojson
+│   │   └── README.txt
+│   ├── models/
+│   │   ├── freight_model.cbm
+│   │   └── model_meta.json
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── frontend/
+│   ├── public/
+│   │   └── vessels/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── portData.js
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   └── .env.example
+│
+├── .gitattributes
+├── .gitignore
+└── README.md
 ```
 
-Open `http://localhost:5173`.
+------------------------------------------------------------------------
 
-## API
+## Dataset
 
-- `GET /health`
-- `GET /api/metadata`
-- `GET /api/route?...`
-- `POST /api/predict`
+The primary training dataset is:
 
-## Routing design
+`backend/data/maritime_ai_training_1m.csv`
 
-SeaRoute is used only for maritime-network geometry. ML does not invent latitude/longitude points. The ML model ranks valid SeaRoute candidates using the same freight model used for prediction. This prevents the yellow line from becoming an arbitrary straight line across countries.
+It contains approximately **1,000,000 records** and includes features
+such as:
 
-This is a planning visualization, not navigation-grade routing.
+- Origin country
+- Origin port
+- Destination country
+- Destination port
+- Cargo type
+- Quantity
+- Vessel type
+- Fuel price
+- Port congestion
+- Month
+- Freight rate
+
+The prediction target is:
+
+`freight_rate_usd_tonne`
+
+The large CSV is managed using **Git LFS**.
+
+------------------------------------------------------------------------
+
+## Machine Learning Pipeline
+
+The machine-learning workflow is:
+
+``` text
+Training Dataset
+      │
+      ▼
+train_model.py
+      │
+      ▼
+CatBoost Regression
+      │
+      ├── freight_model.cbm
+      └── model_meta.json
+      │
+      ▼
+predictor.py
+      │
+      ▼
+FastAPI /api/predict
+      │
+      ▼
+React Frontend
+```
+
+### Model
+
+The system uses **CatBoost Regression** because the dataset contains
+categorical features such as ports, countries, cargo types, and vessel
+types.
+
+The trained model is stored as:
+
+``` text
+backend/models/freight_model.cbm
+```
+
+Model metadata is stored as:
+
+``` text
+backend/models/model_meta.json
+```
+
+------------------------------------------------------------------------
+
+## Maritime Routing
+
+The routing pipeline is:
+
+``` text
+Origin Port
+     +
+Destination Port
+     │
+     ▼
+FastAPI
+     │
+     ▼
+routing.py
+     │
+     ▼
+SeaRoute
+     │
+     ▼
+Maritime Route
+     │
+     ├── Distance
+     └── Coordinates
+     │
+     ▼
+Leaflet Map
+```
+
+The routing system uses maritime route calculation rather than simply
+drawing a straight line between ports.
+
+A landmask is also available at:
+
+``` text
+backend/data/landmask.geojson
+```
+
+for geographic route validation.
+
+------------------------------------------------------------------------
+
+## API Endpoints
+
+### Health Check
+
+``` text
+GET /health
+```
+
+Checks backend and model availability.
+
+### Metadata
+
+``` text
+GET /api/metadata
+```
+
+Returns application/model metadata used by the frontend.
+
+### Freight Prediction
+
+``` text
+POST /api/predict
+```
+
+Receives shipment information and returns the freight forecasting
+result.
+
+### Maritime Route
+
+``` text
+POST /api/route
+```
+
+Calculates the maritime route between the selected ports.
+
+------------------------------------------------------------------------
+
+## Local Setup
+
+### Backend
+
+From the `backend` directory:
+
+``` bash
+python -m venv venv
+```
+
+Activate the virtual environment.
+
+Windows:
+
+``` bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+``` bash
+pip install -r requirements.txt
+```
+
+Start FastAPI:
+
+``` bash
+uvicorn app.main:app --reload
+```
+
+The local API will normally be available at:
+
+``` text
+http://127.0.0.1:8000
+```
+
+### Frontend
+
+From the `frontend` directory:
+
+``` bash
+npm install
+```
+
+Start the Vite development server:
+
+``` bash
+npm run dev
+```
+
+The frontend will normally run at:
+
+``` text
+http://localhost:5173
+```
+
+------------------------------------------------------------------------
+
+## Environment Configuration
+
+### Frontend
+
+The frontend can use:
+
+``` text
+VITE_API_URL
+```
+
+Example:
+
+``` text
+VITE_API_URL=https://sih26006-backend.onrender.com
+```
+
+### Backend
+
+Backend environment variables can be configured using:
+
+``` text
+backend/.env.example
+```
+
+Do not commit private credentials or secrets to GitHub.
+
+------------------------------------------------------------------------
+
+## Deployment
+
+### Frontend
+
+The React application is deployed using **Vercel**.
+
+Production frontend:
+
+https://sih-26006-intelligent-freight-forecasting-4lypplwz1.vercel.app
+
+### Backend
+
+The FastAPI application is deployed using **Render**.
+
+Production backend:
+
+https://sih26006-backend.onrender.com
+
+The frontend communicates with the backend through HTTPS REST APIs.
+
+------------------------------------------------------------------------
+
+## Security
+
+The application follows basic deployment security practices:
+
+- HTTPS communication
+- CORS-based origin restriction
+- Environment-based configuration for secrets
+- Backend-side ML model isolation
+- Trained model is not sent directly to the browser
+
+The client interacts with API endpoints rather than directly accessing
+the model internals.
+
+------------------------------------------------------------------------
+
+## Why FastAPI?
+
+FastAPI provides the communication layer between the React frontend and
+the Python backend.
+
+It allows the application to expose:
+
+- ML prediction services
+- Maritime routing services
+- Health checks
+- Metadata services
+
+This makes the CatBoost and SeaRoute functionality accessible to the
+React application through REST APIs.
+
+------------------------------------------------------------------------
+
+## Why CatBoost?
+
+CatBoost is well suited to this project because many important input
+variables are categorical.
+
+Examples include:
+
+- Country
+- Port
+- Cargo type
+- Vessel type
+
+CatBoost can work effectively with categorical features while providing
+a practical regression model for freight-rate prediction.
+
+------------------------------------------------------------------------
+
+## Why SeaRoute?
+
+A simple geographic straight line is not sufficient for maritime
+transportation.
+
+SeaRoute is used to calculate a route that follows navigable maritime
+geography, allowing the application to provide a more meaningful
+shipping route and distance for the selected ports.
+
+------------------------------------------------------------------------
+
+## End-to-End Workflow
+
+``` text
+1. User selects origin and destination
+              ↓
+2. User enters cargo and shipment details
+              ↓
+3. React sends request to FastAPI
+              ↓
+4. FastAPI validates the request
+              ↓
+5. CatBoost predicts freight rate
+              ↓
+6. SeaRoute calculates maritime route
+              ↓
+7. Backend returns prediction + route data
+              ↓
+8. React displays results and map
+              ↓
+9. User uses the result for freight planning
+```
+
+------------------------------------------------------------------------
+
+## Project Objective
+
+The objective of Freight Intelligence is to support better maritime
+freight decisions by combining:
+
+**Machine Learning + Maritime Routing + Shipment Information**
+
+into a single decision-support platform.
+
+This helps users move from manually estimating freight requirements
+toward a data-driven approach for:
+
+- Freight forecasting
+- Vessel planning
+- Bulk cargo procurement
+- Maritime route evaluation
+- Cost-oriented decision making
+
+------------------------------------------------------------------------
+
+## Team
+
+### GridWalkers
+
+**SIH26006 – Intelligent Freight Forecasting**
+
+Built for the Smart India Hackathon.
+
+------------------------------------------------------------------------
+
+## License
+
+This repository is intended for the SIH26006 project and demonstration
+purposes.
